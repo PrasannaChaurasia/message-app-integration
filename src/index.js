@@ -1,5 +1,7 @@
 require('dotenv').config()
 const { startWhatsAppBot } = require('./whatsapp/bot')
+const { startSlackBot } = require('./slack/bot')
+const { startDiscordBot } = require('./discord/bot')
 
 console.log('🚀 Starting Claude Message App Integration...')
 console.log(`   Model : ${process.env.CLAUDE_MODEL || 'claude-sonnet-4-6'}`)
@@ -8,3 +10,5 @@ console.log(`   Access: ${process.env.ALLOWED_NUMBERS || '(all contacts allowed)
 console.log('')
 
 startWhatsAppBot()
+startSlackBot()
+startDiscordBot()

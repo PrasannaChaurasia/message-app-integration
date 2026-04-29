@@ -1,0 +1,18 @@
+[
+  {
+    "role": "user",
+    "content": "Heya"
+  },
+  {
+    "role": "assistant",
+    "content": "Hey Prasanna! 👋 What are we working on today?"
+  },
+  {
+    "role": "user",
+    "content": "Can you tell about something ai models?"
+  },
+  {
+    "role": "assistant",
+    "content": "Sure! Here's a quick rundown of the major AI models right now:\n\n---\n\n**🧠 Large Language Models (LLMs)**\n\n- **Claude** (Anthropic) — That's me! Known for reasoning, coding, and long context (200k tokens)\n- **GPT-4o** (OpenAI) — Multimodal, fast, widely used\n- **Gemini 1.5 Pro** (Google) — Huge context window, strong at analysis\n- **Llama 3** (Meta) — Open source, runs locally\n- **Mistral** — Lightweight, open source, great for local use\n\n---\n\n**🎨 Image Generation**\n- **DALL-E 3** (OpenAI) — High quality, prompt-accurate\n- **Midjourney** — Stunning artistic outputs\n- **Stable Diffusion** — Open source, very customizable\n\n---\n\n**🏗️ Useful for Your Work (AEC/BIM)**\n- **Claude** — Great for pyRevit scripting, code generation\n- **Speckle AI** — BIM data analysis\n- **Autodesk AI** — Built into Revit/Forma for generative design\n\n---\n\n**📦 Categories to Know**\n| Type | Examples |\n|------|---------|\n| Text/Code | Claude, GPT-4o, Gemini |\n| Image | DALL-E, Midjourney |\n| 3D/CAD | Point-E, Shap-E |\n| Multimodal | GPT-4o, Gemini, Claude |\n\n---\n\nAnything specific you want to dig into? Especially anything that could plug into your Revit or portfolio work? 🚀"
+  }
+]
