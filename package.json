@@ -1,0 +1,25 @@
+{
+  "name": "message-app-integration",
+  "version": "1.0.0",
+  "description": "Control Claude Code remotely from WhatsApp, Discord, and Slack",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "pm2:start": "pm2 start ecosystem.config.js",
+    "pm2:stop": "pm2 stop message-bot",
+    "pm2:restart": "pm2 restart message-bot",
+    "pm2:logs": "pm2 logs message-bot",
+    "pm2:status": "pm2 status",
+    "pm2:save": "pm2 save && pm2 startup"
+  },
+  "keywords": ["claude", "whatsapp", "bot", "anthropic", "automation"],
+  "author": "Prasanna Chaurasia",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.37.0",
+    "dotenv": "^16.4.5",
+    "pm2": "^5.3.1",
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "^1.23.0"
+  }
+}
