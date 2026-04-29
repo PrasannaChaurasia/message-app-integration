@@ -2,9 +2,10 @@ const fs = require('fs')
 const path = require('path')
 
 const HISTORY_DIR = path.join(__dirname, '../../history')
-const MAX_MESSAGES = 20
+const MAX_MESSAGES = 8
+const MAX_ENTRY_CHARS = 800  // max chars stored per message in history
 
-if (!fs.existsSync(HISTORY_DIR)) fs.mkdirSync(HISTORY_DIR, { recursive: true })
+fs.mkdirSync(HISTORY_DIR, { recursive: true })
 
 function historyFile(userId) {
   return path.join(HISTORY_DIR, `${userId.replace(/[^a-z0-9]/gi, '_')}.json`)
@@ -16,10 +17,37 @@ function getHistory(userId) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')) } catch { return [] }
 }
 
+function truncate(content) {
+  if (typeof content !== 'string') return '[non-text content]'
+  if (content.length <= MAX_ENTRY_CHARS) return content
+  return content.slice(0, MAX_ENTRY_CHARS) + '...[truncated]'
+}
+
 function addMessage(userId, role, content) {
-  const history = getHistory(userId)
-  history.push({ role, content })
-  const trimmed = history.slice(-MAX_MESSAGES)
+  let history = getHistory(userId)
+
+  // Strip file content from user messages before storing — keep only the user's question
+  let stored = content
+  if (role === 'user' && typeof content === 'string') {
+    const fileMatch = content.match(/\[FILE:[^\]]+\][\s\S]*?User instruction:\s*(.+)/i)
+    if (fileMatch) stored = fileMatch[1].trim()
+    const ytMatch = content.match(/\[YOUTUBE:[^\]]+\][\s\S]*?User message:\s*(.+)/i)
+    if (ytMatch) stored = ytMatch[1].trim()
+  }
+
+  history.push({ role, content: truncate(stored) })
+
+  // Keep only last MAX_MESSAGES, enforce alternating roles to avoid malformed history
+  const cleaned = []
+  for (const msg of history) {
+    if (cleaned.length && cleaned[cleaned.length - 1].role === msg.role) {
+      cleaned[cleaned.length - 1] = msg // replace duplicate same-role with latest
+    } else {
+      cleaned.push(msg)
+    }
+  }
+
+  const trimmed = cleaned.slice(-MAX_MESSAGES)
   fs.writeFileSync(historyFile(userId), JSON.stringify(trimmed, null, 2))
   return trimmed
 }

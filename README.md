@@ -1,284 +1,251 @@
 <div align="center">
 
-# Claude Code — Message App Integration
+# Claude AI Agent — WhatsApp & Slack Integration
 
-**Control Claude Code remotely from WhatsApp (and soon Discord & Slack)**
+**A fully autonomous AI agent in your pocket. Send a message. Get real work done.**
 
-Send a prompt from your phone. Claude executes the task on your machine and replies — right inside your chat.
+[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=flat-square&logo=node.js)](https://nodejs.org)
+[![Claude](https://img.shields.io/badge/Claude-Sonnet_4.6-D97757?style=flat-square)](https://anthropic.com)
+[![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
+[![PM2](https://img.shields.io/badge/PM2-Ready-2B037A?style=flat-square)](https://pm2.keymetrics.io)
 
-[![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?style=flat-square&logo=node.js)](https://nodejs.org)
-[![Claude API](https://img.shields.io/badge/Claude-API-orange?style=flat-square)](https://anthropic.com)
-[![WhatsApp](https://img.shields.io/badge/WhatsApp-Bot-25D366?style=flat-square&logo=whatsapp)](https://github.com/pedroslopez/whatsapp-web.js)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
+Built by [Prasanna Chaurasia](https://github.com/PrasannaChaurasia) — Urban Matrix, Manchester UK
 
 </div>
 
 ---
 
-## What This Does
+## Overview
 
-This project bridges **Claude Code** with **messaging apps**. Once set up, you can type a prompt into WhatsApp from your phone and Claude will:
-
-- Answer questions
-- Generate or edit code
-- Run tasks on your local machine
-- Reply to you directly inside WhatsApp
-
-**No terminal. No laptop open. Just your phone.**
+Connect Claude to WhatsApp and Slack as a fully agentic AI assistant. It does not just answer questions — it uses tools to search the web, read and generate files, run shell commands, analyse images and documents, transcribe voice notes and videos, and deploy code. All from a message.
 
 ---
 
-## How It Works
+## Capabilities
 
-```
-Your Phone (WhatsApp)
-        │
-        │  Send: "Refactor the auth module in my project"
-        ▼
-  WhatsApp Bot  (whatsapp-web.js running on your machine)
-        │
-        ▼
-  Claude API  (Anthropic)
-        │
-        ▼
-  Response sent back to your WhatsApp chat
-```
-
-The bot runs as a background process on your machine using PM2. You scan a QR code once — after that it stays connected automatically.
+| Category | What It Can Do |
+|---|---|
+| **Conversation** | Full Claude Sonnet responses with per-user conversation history |
+| **Web** | Real-time web search, read any URL, fetch YouTube transcripts |
+| **Documents In** | Read PDF, DOCX, XLSX, TXT, CSV sent via WhatsApp or Slack |
+| **Documents Out** | Generate `.pptx`, `.pdf`, `.xlsx`, `.html`, any text file |
+| **Images** | Analyse images (Claude Vision) + generate images (DALL-E 3) |
+| **Audio/Video** | Transcribe WhatsApp voice notes and video messages (Whisper) |
+| **File System** | Read and write files on the host machine |
+| **Shell** | Run git, npm, node, python, curl directly |
+| **GitHub** | Issues, PRs, repo management via GitHub CLI |
+| **Deploy** | Deploy projects to Vercel from a message |
+| **Notion** | Query and create Notion pages (optional) |
 
 ---
 
-## Supported Platforms
-
-| Platform | Status | Auth Method |
-|---|---|---|
-| WhatsApp | ✅ Ready | QR Scan (free, no API key) |
-| Discord | 🔜 Coming soon | Bot token |
-| Slack | 🔜 Coming soon | App token |
-| Telegram | 🔜 Planned | Bot token |
-
----
-
-## Prerequisites
-
-Before starting, make sure you have:
-
-| Requirement | Version | Check |
-|---|---|---|
-| Node.js | 18 or higher | `node -v` |
-| npm | 8 or higher | `npm -v` |
-| Anthropic API key | — | [Get one here](https://console.anthropic.com) |
-| WhatsApp | Active account on your phone | — |
-| Google Chrome | Installed | Required by whatsapp-web.js |
-
----
-
-## Installation
-
-### Step 1 — Clone the repository
+## Quick Start
 
 ```bash
+# Clone
 git clone https://github.com/PrasannaChaurasia/message-app-integration.git
 cd message-app-integration
-```
 
-### Step 2 — Install dependencies
-
-```bash
+# Install dependencies
 npm install
-```
 
-> This installs `whatsapp-web.js`, the Anthropic SDK, `qrcode-terminal`, `dotenv`, and `pm2`.
-
-### Step 3 — Configure your environment
-
-Copy the example env file:
-
-```bash
+# Set up environment
 cp .env.example .env
-```
+# Edit .env with your API keys (see below)
 
-Open `.env` and fill in your values:
-
-```env
-ANTHROPIC_API_KEY=your_anthropic_api_key_here
-WHATSAPP_SESSION_PATH=./session
-ALLOWED_NUMBERS=          # Optional: comma-separated phone numbers allowed to send commands
-                          # Leave blank to allow all contacts
-                          # Format: 447911123456 (country code, no + or spaces)
-MAX_RESPONSE_LENGTH=4000  # WhatsApp character limit per message
-```
-
-> **Get your Anthropic API key:** Log in at [console.anthropic.com](https://console.anthropic.com) → API Keys → Create Key.
-
-### Step 4 — Run the bot
-
-**Option A — Run directly (terminal stays open, good for testing):**
-
-```bash
+# Start
 npm start
 ```
 
-**Option B — Run as background service with PM2 (recommended for daily use):**
-
-```bash
-npm run pm2:start
-```
-
-This starts the bot as a persistent background process. It will:
-- Survive terminal closes
-- Auto-restart on crashes
-- Auto-start on system reboot (run `npm run pm2:save` once to enable)
-
-### Step 5 — Scan the QR code
-
-When the bot starts for the first time, a QR code will appear in your terminal.
-
-1. Open WhatsApp on your phone
-2. Go to **Settings → Linked Devices → Link a Device**
-3. Scan the QR code shown in the terminal
-
-The session is saved locally. You only need to scan once — the bot reconnects automatically after restarts.
+Scan the QR code with WhatsApp → Settings → Linked Devices → Link a Device.
 
 ---
 
-## Usage
-
-Once the bot is running and linked, send any message to **your own WhatsApp number** from another device, or send it from the linked session.
-
-> **Recommended:** Message yourself (your own number) or use a dedicated WhatsApp account for the bot.
-
-### Example commands
-
-```
-What is the current date and time?
-```
-
-```
-Write a Python function that reads a CSV and returns the top 5 rows
-```
-
-```
-Explain what async/await does in JavaScript
-```
-
-```
-Generate a README template for a REST API project
-```
-
-### Trigger prefix (optional)
-
-If you set `COMMAND_PREFIX` in `.env`, only messages starting with that prefix are processed:
+## Environment Variables
 
 ```env
-COMMAND_PREFIX=/claude
-```
+# ── Required ────────────────────────────────────────────────
+ANTHROPIC_API_KEY=sk-ant-...          # anthropic.com/console
 
-Then send:
+# ── Required for voice, video, image generation ─────────────
+OPENAI_API_KEY=sk-proj-...            # platform.openai.com/api-keys
 
-```
-/claude What files are in my project?
-```
+# ── Slack (optional) ────────────────────────────────────────
+SLACK_BOT_TOKEN=xoxb-...
+SLACK_APP_TOKEN=xapp-...
 
-Leave it blank to process all incoming messages.
+# ── Discord (optional) ──────────────────────────────────────
+DISCORD_BOT_TOKEN=...
+
+# ── Optional configuration ───────────────────────────────────
+ALLOWED_NUMBERS=447700000000          # Comma-separated. Leave empty = allow all
+CLAUDE_MODEL=claude-sonnet-4-6
+MAX_RESPONSE_LENGTH=4000
+NOTION_TOKEN=secret_...               # Optional Notion integration
+```
 
 ---
 
-## PM2 — Managing the Background Service
+## Slack App Setup
 
-| Command | What it does |
-|---|---|
-| `npm run pm2:start` | Start the bot in background |
-| `npm run pm2:stop` | Stop the bot |
-| `npm run pm2:restart` | Restart the bot |
-| `npm run pm2:logs` | View live logs |
-| `npm run pm2:status` | Check if bot is running |
-| `npm run pm2:save` | Save config so bot auto-starts on reboot |
+1. Go to [api.slack.com/apps](https://api.slack.com/apps) and create a new app
+2. Enable **Socket Mode** — generate an App-Level Token with `connections:write` scope → this is your `SLACK_APP_TOKEN`
+3. Under **OAuth & Permissions**, add Bot Token Scopes: `chat:write`, `im:history`, `im:read`, `channels:history`, `app_mentions:read`, `files:read`
+4. Under **Event Subscriptions** → Subscribe to bot events: `message.im`, `app_mention`, `file_shared`
+5. Install to workspace → copy the Bot Token → this is your `SLACK_BOT_TOKEN`
 
 ---
 
-## Folder Structure
+## Run 24/7 with PM2
+
+```bash
+# Install PM2
+npm install -g pm2
+
+# Start and persist across reboots
+pm2 start ecosystem.config.js
+pm2 save
+pm2 startup
+
+# Useful commands
+pm2 status                # Check running status
+pm2 logs message-bot      # Live logs
+pm2 restart message-bot   # Restart
+pm2 stop message-bot      # Stop
+```
+
+---
+
+## Project Structure
 
 ```
 message-app-integration/
 ├── src/
-│   ├── index.js              ← Entry point
-│   ├── whatsapp/
-│   │   └── bot.js            ← WhatsApp bot logic
-│   └── claude/
-│       └── handler.js        ← Claude API handler
-├── local-agent/
-│   └── agent.js              ← Local file/CLI task handler (advanced)
-├── docs/
-│   └── whatsapp-setup.md     ← Detailed WhatsApp setup guide
-├── .env.example              ← Environment variable template
-├── .gitignore
-├── ecosystem.config.js       ← PM2 config
-├── package.json
-└── README.md
+│   ├── index.js              # Entry point
+│   ├── whatsapp/bot.js       # WhatsApp via Baileys (no Puppeteer/Chrome)
+│   ├── slack/bot.js          # Slack via Bolt + Socket Mode
+│   ├── discord/bot.js        # Discord via discord.js
+│   ├── claude/
+│   │   ├── handler.js        # Agentic loop — Claude + tool use
+│   │   └── history.js        # Per-user conversation history
+│   └── agent/tools.js        # 17 registered tools
+├── .env.example
+├── ecosystem.config.js       # PM2 config
+└── package.json
 ```
+
+---
+
+## How the Agent Works
+
+```
+Message received (WhatsApp / Slack / Discord)
+          │
+          ▼
+  Media extraction
+  PDF → text  |  Image → base64  |  Audio/Video → Whisper transcript
+          │
+          ▼
+  Claude API  (claude-sonnet-4-6)
+  System prompt + 17 tool definitions + conversation history
+          │
+          ▼
+  Agentic loop
+  ┌─────────────────────────────────┐
+  │  Claude decides → calls tool    │
+  │  Tool runs → result returned    │
+  │  Claude continues or calls more │
+  └──────────── until done ─────────┘
+          │
+          ▼
+  Final response sent
+  Text reply  |  File attachment (PPTX / PDF / XLSX / HTML)
+```
+
+---
+
+## Example Prompts
+
+**Research + generate PDF:**
+```
+Research UK architecture job market: salary ranges, top hiring firms,
+visa sponsorship availability, and required qualifications. Save as PDF.
+```
+
+**Explain a YouTube video:**
+```
+Explain this YouTube video to me in simple terms:
+https://www.youtube.com/watch?v=WR-kVYU-lBU
+```
+
+**Generate a presentation:**
+```
+Create a 6-slide PowerPoint on AI tools in architecture 2025.
+Dark professional theme.
+```
+
+**Generate an image:**
+```
+Generate a photorealistic image of a minimalist residential building
+in Manchester at dusk, glass facade, street level view.
+```
+
+**Read a URL and summarise:**
+```
+Read this article and give me a structured PDF summary:
+https://example.com/article
+```
+
+**Project git status:**
+```
+What is the current git status of the Urbanmatrix portfolio?
+```
+
+**Shell command:**
+```
+Run npm run build in D:/claude-projects/portfolio and tell me if it passes.
+```
+
+**Commands:**
+- `clear` or `reset` — wipe your conversation history
 
 ---
 
 ## Security
 
-- Your Anthropic API key is stored in `.env` — never committed to git
-- The `.gitignore` excludes `.env` and the WhatsApp session folder
-- Use `ALLOWED_NUMBERS` in `.env` to restrict which phone numbers can send commands
-- The WhatsApp session is stored locally — no data is sent to third-party servers except Anthropic's API
+- `ALLOWED_NUMBERS` in `.env` restricts who can interact via WhatsApp
+- The bot ignores all WhatsApp group messages
+- Messages sent to others from your linked device are ignored
+- File system access is locked to configured project directories
+- `.env`, session files, history, and generated files are excluded from git
 
 ---
 
-## Troubleshooting
+## Tech Stack
 
-**QR code not showing:**
-- Make sure Google Chrome is installed
-- Try deleting the `./session` folder and restarting
-
-**Bot not responding:**
-- Check your `ANTHROPIC_API_KEY` is valid
-- Run `npm run pm2:logs` to see error output
-
-**Session disconnects after phone restart:**
-- This is normal — WhatsApp Web requires the phone to be online
-- The bot reconnects automatically once your phone is back online
-
-**Messages from wrong number getting through:**
-- Set `ALLOWED_NUMBERS` in `.env` to restrict access
-
----
-
-## Roadmap
-
-- [x] WhatsApp integration (Phase 1)
-- [ ] Discord bot (Phase 2)
-- [ ] Slack bot (Phase 2)
-- [ ] Local file task execution via PM2 agent
-- [ ] Telegram bot (Phase 3)
-- [ ] Web dashboard for session management
+| | Library | Purpose |
+|---|---|---|
+| WhatsApp | [@whiskeysockets/baileys](https://github.com/WhiskeySockets/Baileys) | No Chrome, no Puppeteer |
+| Slack | [@slack/bolt](https://slack.dev/bolt-js) | Socket Mode |
+| Discord | [discord.js](https://discord.js.org) | Bot gateway |
+| AI | [@anthropic-ai/sdk](https://npmjs.com/package/@anthropic-ai/sdk) | Claude Sonnet |
+| Voice/Video | OpenAI Whisper | Transcription |
+| Images | OpenAI DALL-E 3 | Generation |
+| PDF out | [pdfkit](https://pdfkit.org) | |
+| PPTX out | [pptxgenjs](https://gitbrent.github.io/PptxGenJS) | |
+| XLSX out | [xlsx](https://npmjs.com/package/xlsx) | |
+| PDF in | [pdf-parse](https://npmjs.com/package/pdf-parse) | |
+| DOCX in | [mammoth](https://npmjs.com/package/mammoth) | |
+| Process | [PM2](https://pm2.keymetrics.io) | 24/7 uptime |
 
 ---
 
 ## Contributing
 
-Pull requests are welcome. For major changes, open an issue first to discuss what you would like to change.
-
-1. Fork the repository
-2. Create your branch: `git checkout -b feature/your-feature`
-3. Commit your changes: `git commit -m "Add your feature"`
-4. Push: `git push origin feature/your-feature`
-5. Open a Pull Request
+Pull requests welcome. Open an issue first for major changes.
 
 ---
 
 ## License
 
-MIT — free to use, modify, and distribute.
-
----
-
-<div align="center">
-
-Built by [Prasanna Chaurasia](https://github.com/PrasannaChaurasia) — Urban Matrix, Manchester UK
-
-</div>
+MIT
