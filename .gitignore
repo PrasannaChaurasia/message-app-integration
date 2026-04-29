@@ -1,5 +1,11 @@
 node_modules/
 .env
 session/
+baileys-session/
+history/
+received-media/
+generated/
 *.log
 .DS_Store
+.wwebjs_cache/
+whatsapp-qr.png
